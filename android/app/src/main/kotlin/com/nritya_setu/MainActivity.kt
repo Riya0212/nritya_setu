@@ -1,4 +1,4 @@
-package com.example.nritya_setu
+package com.nritya_setu
 
 import io.flutter.embedding.android.FlutterActivity
 

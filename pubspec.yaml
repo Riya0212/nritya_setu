@@ -48,6 +48,7 @@ dependencies:
   slang_flutter: ^3.32.0
   build_runner: ^2.10.4
   slang: ^3.32.0
+  change_app_package_name: ^1.5.0
 
 dev_dependencies:
   flutter_test:
