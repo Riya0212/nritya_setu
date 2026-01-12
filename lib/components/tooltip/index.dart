@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:kaizen_elecon/constants/colors.dart';
+import 'package:nritya_setu/constants/colors.dart';
 import 'package:super_tooltip/super_tooltip.dart';
 
 class TooltipTextField extends StatefulWidget {

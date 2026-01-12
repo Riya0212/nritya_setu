@@ -1,9 +1,8 @@
 import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kaizen_elecon/constants/colors.dart';
+import 'package:nritya_setu/constants/colors.dart';
 
 import 'metrics.dart';
 
@@ -97,19 +96,20 @@ PreferredSizeWidget buildCustomAppBar(
             decoration: BoxDecoration(
               // color: colors.appbarColor,
               gradient: LinearGradient(
-                colors: colors.isDarkMode
-                    ? [
-                        Colors.blue.shade300,
-                        Colors.blue.shade400,
-                        Colors.blue.shade600,
-                        Colors.blue.shade600,
-                      ]
-                    : [
-                        Color.fromARGB(255, 2, 5, 10), // dark navy blue
-                        Color.fromARGB(255, 0, 1, 3), // deep blue
-                        // Color(0xFF123A8C), // tech blue
-                         Color.fromARGB(255, 0, 1, 3), // deep blue
-                      ],
+                colors:
+                    colors.isDarkMode
+                        ? [
+                          Colors.blue.shade300,
+                          Colors.blue.shade400,
+                          Colors.blue.shade600,
+                          Colors.blue.shade600,
+                        ]
+                        : [
+                          Color.fromARGB(255, 2, 5, 10), // dark navy blue
+                          Color.fromARGB(255, 0, 1, 3), // deep blue
+                          // Color(0xFF123A8C), // tech blue
+                          Color.fromARGB(255, 0, 1, 3), // deep blue
+                        ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -119,37 +119,39 @@ PreferredSizeWidget buildCustomAppBar(
           // 📷 Optional decorative image
           topImage != null && topImage != ''
               ? Positioned(
-                  bottom:
-                      top ??
-                      (Metrics.isTablet(context) == true
-                          ? -Metrics.width(context) * 0.03
-                          : -Metrics.height(context) * 0.03),
-                  right: -5,
-                  child: Image.asset(
-                    topImage,
-                    width: Metrics.height(context) * 0.12,
-                    height: Metrics.height(context) * 0.12,
-                  ),
-                )
+                bottom:
+                    top ??
+                    (Metrics.isTablet(context) == true
+                        ? -Metrics.width(context) * 0.03
+                        : -Metrics.height(context) * 0.03),
+                right: -5,
+                child: Image.asset(
+                  topImage,
+                  width: Metrics.height(context) * 0.12,
+                  height: Metrics.height(context) * 0.12,
+                ),
+              )
               : Container(),
 
           AppBar(
             backgroundColor: Colors.transparent, // Make it transparent
             elevation: 0, // Remove shadow
-            leadingWidth: hasLeading
-                ? leadingWidth ??
-                      (Metrics.isTablet(context)
-                          ? Metrics.width(context) * 0.08
-                          : Metrics.width(context) * 0.12)
-                : Metrics.width(context) * 0.03,
-            leading: hasLeading
-                ? isLeadingClickable == true
-                      ? InkWell(
+            leadingWidth:
+                hasLeading
+                    ? leadingWidth ??
+                        (Metrics.isTablet(context)
+                            ? Metrics.width(context) * 0.08
+                            : Metrics.width(context) * 0.12)
+                    : Metrics.width(context) * 0.03,
+            leading:
+                hasLeading
+                    ? isLeadingClickable == true
+                        ? InkWell(
                           onTap:
                               onBackPress ??
                               () => {
                                 //go back
-                              Get.back()
+                                context.pop(),
                               },
                           child:
                               customLeading ??
@@ -159,20 +161,20 @@ PreferredSizeWidget buildCustomAppBar(
                                 size: Metrics.height(context) * 0.03,
                               ),
                         )
-                      : customLeading
-                : SizedBox(width: Metrics.width(context) * 0.03),
+                        : customLeading
+                    : SizedBox(width: Metrics.width(context) * 0.03),
 
-            titleSpacing: Metrics.isTablet(context)
-                ? 0
-                : Metrics.height(context) * 0.01,
+            titleSpacing:
+                Metrics.isTablet(context) ? 0 : Metrics.height(context) * 0.01,
             title:
                 customTitle ??
                 Text(
                   title,
                   style: TextStyle(
-                    fontSize: Metrics.isTablet(context)
-                        ? Metrics.getFontSize(context, 21)
-                        : Metrics.getFontSize(context, 20),
+                    fontSize:
+                        Metrics.isTablet(context)
+                            ? Metrics.getFontSize(context, 21)
+                            : Metrics.getFontSize(context, 20),
                     color: Colors.white,
                   ),
                 ),

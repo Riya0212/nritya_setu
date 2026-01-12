@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kaizen_elecon/constants/colors.dart';
+import 'package:nritya_setu/constants/colors.dart';
 
 import '../../Constants/index.dart';
 

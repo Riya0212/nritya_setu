@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "378227139760",
+    "project_id": "nrityasetu",
+    "storage_bucket": "nrityasetu.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:378227139760:android:6b6a153270269fa75e0775",
+        "android_client_info": {
+          "package_name": "com.example.nritya_setu"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHlRmdpGilen-YpQVaWjWwaXj35HhtNz4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:kaizen_elecon/constants/colors.dart';
-import 'package:kaizen_elecon/constants/metrics.dart';
+import 'package:nritya_setu/Constants/index.dart';
+import 'package:nritya_setu/constants/colors.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 
 void newAlertDialog(
@@ -14,201 +13,89 @@ void newAlertDialog(
 }) {
   final colors = Theme.of(context).colors;
 
-  if (Get.isDialogOpen!) {
-    Get.back(); // Close the current open dialog
+  // Close dialog if already open
+  if (Navigator.of(context, rootNavigator: true).canPop()) {
+    Navigator.of(context, rootNavigator: true).pop();
   }
-  Get.dialog(
-    Dialog(
-      backgroundColor: colors.colorWhite,
-      shadowColor: colors.colorWhite,
-      surfaceTintColor: colors.colorWhite,
-      insetPadding: EdgeInsets.all(20.h),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(20.r)),
-      ),
-      child: Container(
-        margin: EdgeInsets.only(
-          top: 15.h,
-          left: 10.w,
-          right: 10.w,
-          bottom: 15.h,
+
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext dialogContext) {
+      return Dialog(
+        backgroundColor: colors.colorWhite,
+        shadowColor: colors.colorWhite,
+        surfaceTintColor: colors.colorWhite,
+        insetPadding: EdgeInsets.all(Metrics.width(context) * 0.03),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(Metrics.height(context) * 0.02),
+          ),
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            CircleAvatar(
-              radius: 25,
-              backgroundColor: Colors.blue[100],
-              child: Icon(Icons.error, color: colors.colorWhite),
-            ),
-            SizedBox(height: 15.h),
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: colors.colorBlack,
-                fontSize: 16.sp,
-                fontWeight: FontWeight.bold,
+        child: Container(
+          margin: EdgeInsets.all(Metrics.width(context) * 0.02),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              CircleAvatar(
+                radius: 25,
+                backgroundColor: Colors.blue[100],
+                child: Icon(Icons.error, color: colors.colorWhite),
               ),
-              maxLines: 5,
-            ),
-            SizedBox(height: 5.h),
-            Text(
-              message,
-              textAlign: TextAlign.center,
-              style: TextStyle(color: colors.colorBlack, fontSize: 15.sp),
-              maxLines: 5,
-            ),
-            SizedBox(height: 20.h),
-            Container(
-              margin: EdgeInsets.only(
-                top: 10.h,
-                left: 10.w,
-                right: 10.w,
-                bottom: 10.h,
+              SizedBox(height: Metrics.height(context) * 0.01),
+              Text(
+                title,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: colors.colorBlack,
+                  fontSize: Metrics.getFontSize(context, 16),
+                  fontWeight: FontWeight.bold,
+                ),
+                maxLines: 5,
               ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.r),
-                color: colors.colorBlue,
+              SizedBox(height: Metrics.height(context) * 0.01),
+              Text(
+                message,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: colors.colorBlack,
+                  fontSize: Metrics.getFontSize(context, 15),
+                ),
+                maxLines: 5,
               ),
-              height: 40.h,
-              width: MediaQuery.of(context).size.width,
-              child: TextButton(
-                onPressed: () async {
-                  Navigator.of(context).pop();
-                  if (onActionClick != null) {
-                    onActionClick.call('data');
-                  } else {
-                    // Navigator.of(context).pop();
-                  }
-                },
-                child: Center(
-                  child: Text(
-                    okButtonText,
-                    style: TextStyle(
-                      color: colors.colorWhite,
-                      fontSize: 15.h,
-                      fontWeight: FontWeight.bold,
+              SizedBox(height: Metrics.height(context) * 0.01),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                    Metrics.height(context) * 0.01,
+                  ),
+                  color: colors.colorBlue,
+                ),
+                width: MediaQuery.of(context).size.width,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.of(dialogContext).pop();
+                    onActionClick?.call('data');
+                  },
+                  child: Center(
+                    child: Text(
+                      okButtonText,
+                      style: TextStyle(
+                        color: colors.colorWhite,
+                        fontSize: Metrics.getFontSize(context, 16),
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    ),
-    barrierDismissible: false,
+      );
+    },
   );
-}
-
-void newSuccessDialog(
-  String title,
-  String message,
-  String okButtonText,
-  BuildContext context, {
-  Function(String)? onActionClick,
-}) {
-  final colors = Theme.of(context).colors;
-
-  if (Get.isDialogOpen!) {
-    Get.back(); // Close the current open dialog
-  }
-  Get.dialog(
-    Dialog(
-      backgroundColor: Colors.white,
-      shadowColor: Colors.white,
-      surfaceTintColor: Colors.white,
-      insetPadding: EdgeInsets.all(20.h),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(20.r)),
-      ),
-      child: Container(
-        margin: EdgeInsets.only(
-          top: 15.h,
-          left: 10.w,
-          right: 10.w,
-          bottom: 15.h,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            CircleAvatar(
-              radius: 25,
-              backgroundColor: Colors.blue[100],
-              child: const Icon(Icons.cloud_done, color: Colors.white),
-            ),
-            SizedBox(height: 15.h),
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: colors.colorBlack,
-                fontSize: 16.sp,
-                fontWeight: FontWeight.bold,
-              ),
-              maxLines: 5,
-            ),
-            SizedBox(height: 5.h),
-            Text(
-              message,
-              textAlign: TextAlign.center,
-              style: TextStyle(color: colors.colorBlack, fontSize: 15.sp),
-              maxLines: 5,
-            ),
-            SizedBox(height: 20.h),
-            Container(
-              margin: EdgeInsets.only(
-                top: 10.h,
-                left: 10.w,
-                right: 10.w,
-                bottom: 10.h,
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.r),
-                color: colors.colorBlue,
-              ),
-              height: 40.h,
-              width: MediaQuery.of(context).size.width,
-              child: TextButton(
-                onPressed: () async {
-                  Navigator.of(context).pop();
-                  if (onActionClick != null) {
-                    onActionClick.call('data');
-                  } else {
-                    // Navigator.of(context).pop();
-                  }
-                },
-                child: Center(
-                  child: Text(
-                    okButtonText,
-                    style: TextStyle(
-                      color: colors.colorWhite,
-                      fontSize: 15.h,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    ),
-    barrierDismissible: false,
-  );
-}
-
-void handleLaunchPhnURL({required String contact}) async {
-  final phnUrl = 'tel:$contact';
-  if (await canLaunchUrl(Uri.parse(phnUrl))) {
-    Get.back();
-    await launchUrl(Uri.parse(phnUrl));
-  } else {
-    newAlertDialog("oopss".tr, 'Cannot launch URL', "ok".tr, Get.context!);
-  }
 }
 
 void newDialog(
@@ -226,19 +113,15 @@ void newDialog(
     context: context,
     builder: (BuildContext context) {
       return Dialog(
-        insetPadding: EdgeInsets.all(20.h),
+        insetPadding: EdgeInsets.all(Metrics.width(context) * 0.03),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20.r)),
+          borderRadius: BorderRadius.all(
+            Radius.circular(Metrics.height(context) * 0.02),
+          ),
         ),
         child: Stack(
           children: [
             Container(
-              margin: EdgeInsets.only(
-                top: 15.h,
-                left: 10.w,
-                right: 10.w,
-                bottom: 15.h,
-              ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -249,38 +132,39 @@ void newDialog(
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: colors.colorBlack,
-                      fontSize: 16.sp,
+                      fontSize: Metrics.getFontSize(context, 16),
                       fontWeight: FontWeight.bold,
                     ),
                     maxLines: 5,
                   ),
-                  SizedBox(height: 5.h),
+                  SizedBox(height: Metrics.height(context) * 0.01),
                   Text(
                     message,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: colors.colorBlack, fontSize: 15.sp),
+                    style: TextStyle(
+                      color: colors.colorBlack,
+                      fontSize: Metrics.getFontSize(context, 15),
+                    ),
                     maxLines: 5,
                   ),
-                  SizedBox(height: 5.h),
+                  SizedBox(height: Metrics.height(context) * 0.01),
                   Text(
                     number,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: colors.colorBlack, fontSize: 15.sp),
+                    style: TextStyle(
+                      color: colors.colorBlack,
+                      fontSize: Metrics.getFontSize(context, 15),
+                    ),
                     maxLines: 5,
                   ),
-                  SizedBox(height: 10.h),
+                  SizedBox(height: Metrics.height(context) * 0.01),
                   Container(
-                    margin: EdgeInsets.only(
-                      top: 10.h,
-                      left: 10.w,
-                      right: 10.w,
-                      bottom: 10.h,
-                    ),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.r),
+                      borderRadius: BorderRadius.circular(
+                        Metrics.height(context) * 0.01,
+                      ),
                       color: colors.colorBlue,
                     ),
-                    height: 40.h,
                     width: MediaQuery.of(context).size.width,
                     child: TextButton(
                       onPressed: () {
@@ -294,7 +178,7 @@ void newDialog(
                           okButtonText,
                           style: TextStyle(
                             color: colors.colorWhite,
-                            fontSize: 15.h,
+                            fontSize: Metrics.getFontSize(context, 15),
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -308,9 +192,7 @@ void newDialog(
               top: 0,
               right: 0,
               child: InkWell(
-                onTap: () {
-                  handleLaunchPhnURL(contact: '9016004271');
-                },
+                onTap: () {},
                 child: Container(
                   margin: const EdgeInsets.symmetric(
                     vertical: 10,
@@ -410,9 +292,10 @@ void customDialog(
                     ],
                     SizedBox(height: Metrics.height(context) * 0.02),
                     Row(
-                      mainAxisAlignment: cancelBtnText != null
-                          ? MainAxisAlignment.spaceBetween
-                          : MainAxisAlignment.center,
+                      mainAxisAlignment:
+                          cancelBtnText != null
+                              ? MainAxisAlignment.spaceBetween
+                              : MainAxisAlignment.center,
                       children: [
                         if (cancelBtnText != null) ...[
                           ElevatedButton(
@@ -436,9 +319,10 @@ void customDialog(
                             child: Text(
                               cancelBtnText ?? '',
                               style: TextStyle(
-                                fontSize: Metrics.isTablet(context)
-                                    ? Metrics.getFontSize(context, 12)
-                                    : Metrics.getFontSize(context, 14),
+                                fontSize:
+                                    Metrics.isTablet(context)
+                                        ? Metrics.getFontSize(context, 12)
+                                        : Metrics.getFontSize(context, 14),
                               ),
                             ),
                           ),
@@ -463,9 +347,10 @@ void customDialog(
                           child: Text(
                             okButtonText ?? 'OK',
                             style: TextStyle(
-                              fontSize: Metrics.isTablet(context)
-                                  ? Metrics.getFontSize(context, 12)
-                                  : Metrics.getFontSize(context, 14),
+                              fontSize:
+                                  Metrics.isTablet(context)
+                                      ? Metrics.getFontSize(context, 12)
+                                      : Metrics.getFontSize(context, 14),
                             ),
                           ),
                         ),

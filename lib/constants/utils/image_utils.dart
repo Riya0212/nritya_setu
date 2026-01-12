@@ -6,14 +6,17 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/entypo_icons.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
-import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:kaizen_elecon/components/alert_dialog.dart';
-import 'package:kaizen_elecon/components/text/text_component.dart';
-import 'package:kaizen_elecon/constants/colors.dart';
-import 'package:kaizen_elecon/constants/index.dart';
+import 'package:nritya_setu/components/index.dart';
+import 'package:nritya_setu/constants/colors.dart';
+import 'package:nritya_setu/constants/images.dart';
+import 'package:nritya_setu/constants/metrics.dart';
+
 import 'package:pdfx/pdfx.dart';
 import 'package:permission_handler/permission_handler.dart';
+
+import '../../components/alert_dialog.dart';
 
 Widget _optionItem(
   BuildContext context, {
@@ -282,7 +285,7 @@ Future<void> showPdfAgreementDialog(
                     right: 0,
                     child: InkWell(
                       onTap: () {
-                        Get.back();
+                        context.pop();
                       },
                       child: Container(
                         margin: EdgeInsets.all(Metrics.width(context) * 0.02),
@@ -396,44 +399,48 @@ void showFullScreenImage(
             Center(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(0),
-                child: image.existsSync()
-                    ? Image.file(
-                        image,
-                        fit: BoxFit.contain,
-                        width: double.infinity,
-                        height: double.infinity,
-                      )
-                    : Stack(
-                        children: [
-                          Image.asset(
-                            Images.filesIcon,
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                            height: double.infinity,
-                          ),
-                          Positioned.fill(
-                            child: Center(
-                              child: Container(
-                                alignment: Alignment.center,
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: Metrics.height(context) * 0.05,
-                                  vertical: Metrics.width(context) * 0.05,
-                                ),
-                                color: Colors.black54,
-                                child: TextComponent(
-                                  text: 'Image has been deleted from device.',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: Metrics.getFontSize(context, 14),
-                                    fontWeight: FontWeight.bold,
+                child:
+                    image.existsSync()
+                        ? Image.file(
+                          image,
+                          fit: BoxFit.contain,
+                          width: double.infinity,
+                          height: double.infinity,
+                        )
+                        : Stack(
+                          children: [
+                            Image.asset(
+                              Images.filesIcon,
+                              fit: BoxFit.cover,
+                              width: double.infinity,
+                              height: double.infinity,
+                            ),
+                            Positioned.fill(
+                              child: Center(
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: Metrics.height(context) * 0.05,
+                                    vertical: Metrics.width(context) * 0.05,
+                                  ),
+                                  color: Colors.black54,
+                                  child: TextComponent(
+                                    text: 'Image has been deleted from device.',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: Metrics.getFontSize(
+                                        context,
+                                        14,
+                                      ),
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
+                          ],
+                        ),
               ),
             ),
             // Close Button

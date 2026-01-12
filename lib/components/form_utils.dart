@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kaizen_elecon/components/textFormField/text_form_field_component.dart';
-import 'package:kaizen_elecon/constants/colors.dart';
+import 'package:nritya_setu/components/textFormField/text_form_field_component.dart';
+import 'package:nritya_setu/constants/colors.dart';
 import 'package:super_tooltip/super_tooltip.dart';
 
 import '../constants/index.dart';
