@@ -1,1 +1,129 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"nrityasetu","appId":"1:378227139760:android:6b6a153270269fa75e0775","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"nrityasetu","configurations":{"android":"1:378227139760:android:6b6a153270269fa75e0775","ios":"1:378227139760:ios:1c6c6f337669d68b5e0775","macos":"1:378227139760:ios:1c6c6f337669d68b5e0775"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "nrityasetu",
+          "appId": "1:378227139760:android:6b6a153270269fa75e0775",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "nrityasetu",
+          "configurations": {
+            "android": "1:378227139760:android:6b6a153270269fa75e0775",
+            "ios": "1:378227139760:ios:1c6c6f337669d68b5e0775",
+            "macos": "1:378227139760:ios:1c6c6f337669d68b5e0775"
+          }
+        }
+      }
+    }
+  },
+  "emulators": {
+    "dataconnect": {
+      "dataDir": "dataconnect/.dataconnect/pgliteData",
+      "port": 9399
+    },
+    "apphosting": {
+      "port": 5002,
+      "rootDirectory": "./"
+    },
+    "auth": {
+      "port": 9099
+    },
+    "functions": {
+      "port": 5001
+    },
+    "firestore": {
+      "port": 8080
+    },
+    "database": {
+      "port": 9000
+    },
+    "hosting": {
+      "port": 5000
+    },
+    "pubsub": {
+      "port": 8085
+    },
+    "storage": {
+      "port": 9199
+    },
+    "eventarc": {
+      "port": 9299
+    },
+    "tasks": {
+      "port": 9499
+    },
+    "ui": {
+      "enabled": true
+    },
+    "singleProjectMode": true
+  },
+  "dataconnect": {
+    "source": "dataconnect"
+  },
+  "firestore": {
+    "database": "default",
+    "location": "asia-south1",
+    "rules": "firestore.rules",
+    "indexes": "firestore.nrityasetu.indexes"
+  },
+  "functions": [
+    {
+      "codebase": "default",
+      "disallowLegacyRuntimeConfig": true,
+      "predeploy": [
+        "npm --prefix \"$RESOURCE_DIR\" run lint"
+      ],
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ],
+      "source": "functions"
+    }
+  ],
+  "apphosting": [
+    {
+      "backendId": "nritya-setu-app",
+      "rootDir": "/lib",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "functions"
+      ]
+    },
+    {
+      "backendId": "nritya-setu-app",
+      "rootDir": "./lib",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "functions"
+      ]
+    }
+  ],
+  "hosting": {
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  },
+  "storage": {
+    "rules": "storage.rules"
+  },
+  "extensions": {},
+  "database": {
+    "rules": "database.rules.json"
+  }
+}

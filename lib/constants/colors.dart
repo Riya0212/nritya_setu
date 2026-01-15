@@ -7,7 +7,7 @@ extension CustomTheme on ThemeData {
 
 class CustomColors {
   static const Color white = Colors.white;
-  static const Color darkBlue =  Color.fromARGB(255, 2, 5, 10);
+  static const Color darkBlue = Color.fromARGB(255, 2, 5, 10);
   static const Color lightGrey100 = Color(0xffF6F6F6);
   static const Color platinum100 = Color(0xff737171);
   static const Color silver100 = Color(0xFFC4C4C4);
@@ -29,6 +29,11 @@ class CustomColors {
   static const Color deepgrey = Color(0xff3D405B);
 
   static const Color black = Colors.black;
+  static const List<Color> marronGradient = [
+    Color(0xff7A1E2B),
+    Color(0xff5E1621),
+    Color(0xffA23A4A),
+  ];
 
   final bool isDarkMode;
 
@@ -53,11 +58,12 @@ class CustomColors {
   Color get lightBlueText => isDarkMode ? white : lightBlue;
   Color get bottomTabGrey => isDarkMode ? white : silver;
   Color get selectedShiftColor => Colors.yellow.shade100;
-  Color get appbarColor => lightBlue;
+  Color get appbarColor => Colors.amber;
   Color get dustyColor => dustyPurple;
   Color get bgColor => offWhite;
   Color get orangeColor => warmTeracotta;
   Color get darkBlueColor => darkBlue;
+  List<Color> get marronBg => marronGradient;
 
   Color get offWhiteBg => const Color.fromARGB(255, 255, 251, 251);
 

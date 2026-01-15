@@ -1,0 +1,47 @@
+mutation CreateNewCourse($title: String!, $description: String!, $difficultyLevel: String!, $price: Float, $thumbnailUrl: String) @auth(level: USER) {
+  course_insert(data: {
+    title: $title,
+    description: $description,
+    difficultyLevel: $difficultyLevel,
+    price: $price,
+    thumbnailUrl: $thumbnailUrl,
+    guruId_expr: "auth.uid",
+    createdAt_expr: "request.time"
+  })
+}
+
+query GetCoursesForCurrentUser @auth(level: USER) {
+  courses(where: {guruId: {eq_expr: "auth.uid"}}) {
+    id
+    title
+    description
+    difficultyLevel
+    price
+    thumbnailUrl
+  }
+}
+
+mutation EnrollInCourse($courseId: UUID!) @auth(level: USER) {
+  enrollment_insert(data: {
+    courseId: $courseId,
+    studentId_expr: "auth.uid",
+    enrolledAt_expr: "request.time",
+    status: "ENROLLED"
+  })
+}
+
+query GetEnrolledCoursesForCurrentUser @auth(level: USER) {
+  enrollments(where: {studentId: {eq_expr: "auth.uid"}}) {
+    course {
+      id
+      title
+      description
+      difficultyLevel
+      price
+      thumbnailUrl
+    }
+    enrolledAt
+    completedAt
+    status
+  }
+}

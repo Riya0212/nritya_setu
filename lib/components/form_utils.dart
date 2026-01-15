@@ -4,6 +4,7 @@ import 'package:nritya_setu/constants/colors.dart';
 import 'package:super_tooltip/super_tooltip.dart';
 
 import '../constants/index.dart';
+import 'index.dart';
 
 Widget buildTextField({
   required String hint,
@@ -63,7 +64,7 @@ Widget buildTextField({
     keyboardType: keyboardType,
     obscureText: obscureText,
     // 🔽 Dynamic autovalidateMode with fallback
-    autovalidateMode: autovalidateMode,
+    autovalidateMode: autovalidateMode?? AutovalidateMode.onUserInteraction,
 
     textAlign: TextAlign.center,
     inputTextStyle: TextStyle(
@@ -123,5 +124,52 @@ Widget buildTextField({
             top: Metrics.width(context) * 0.01,
             bottom: Metrics.width(context) * 0.01,
           ),
+  );
+}
+
+
+Widget buildBtn({
+  required BuildContext context,
+  required String title,
+  required VoidCallback onTap,
+  Color backgroundColor = Colors.amber,
+  Color textColor = Colors.white,
+  double? width,
+}) {
+  final colors = Theme.of(context).colors;
+  return InkWell(
+    borderRadius: BorderRadius.circular(
+      Metrics.height(context) * 0.02,
+    ),
+    onTap: onTap,
+    child: Container(
+      width: width ?? double.infinity,
+      padding: EdgeInsets.all(
+        Metrics.width(context) * 0.03,
+      ),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        boxShadow: [
+          BoxShadow(
+            color: colors.colorLightGrey.withAlpha(50),
+            spreadRadius: 2,
+            blurRadius: 10,
+            offset: const Offset(2, 2),
+          ),
+        ],
+        borderRadius: BorderRadius.circular(
+          Metrics.height(context) * 0.02,
+        ),
+      ),
+      alignment: Alignment.center,
+      child: TextComponent(
+        text: title,
+        style: TextStyle(
+          color: textColor,
+          fontWeight: FontWeight.bold,
+          fontSize: Metrics.getFontSize(context, 20),
+        ),
+      ),
+    ),
   );
 }

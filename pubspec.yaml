@@ -49,6 +49,9 @@ dependencies:
   build_runner: ^2.10.4
   slang: ^3.32.0
   change_app_package_name: ^1.5.0
+  flutter_screenutil: ^5.9.3
+  provider: ^6.1.5+1
+  shared_preferences: ^2.5.3
 
 dev_dependencies:
   flutter_test:
