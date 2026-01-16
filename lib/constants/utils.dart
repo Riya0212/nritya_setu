@@ -85,10 +85,10 @@ PreferredSizeWidget buildCustomAppBar(
       customHeight ?? Metrics.height(context) * 0.055,
     ),
     child: ClipRRect(
-      // borderRadius: BorderRadius.only(
-      //   bottomLeft: Radius.circular(Metrics.height(context) * 0.02),
-      //   bottomRight: Radius.circular(Metrics.height(context) * 0.02),
-      // ),
+      borderRadius: BorderRadius.only(
+        bottomLeft: Radius.circular(Metrics.height(context) * 0.02),
+        bottomRight: Radius.circular(Metrics.height(context) * 0.02),
+      ),
       child: Stack(
         children: [
           // 🌈 Gradient background layer
@@ -104,12 +104,7 @@ PreferredSizeWidget buildCustomAppBar(
                           Colors.blue.shade600,
                           Colors.blue.shade600,
                         ]
-                        : [
-                          Color.fromARGB(255, 2, 5, 10), // dark navy blue
-                          Color.fromARGB(255, 0, 1, 3), // deep blue
-                          // Color(0xFF123A8C), // tech blue
-                          Color.fromARGB(255, 0, 1, 3), // deep blue
-                        ],
+                        :colors.marronBg,
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
