@@ -1,0 +1,385 @@
+library motiontabbar;
+
+import 'dart:developer';
+
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:nritya_setu/constants/colors.dart';
+import 'MotionTabBarController.dart';
+import 'MotionTabItem.dart';
+import 'helpers/HalfClipper.dart';
+import 'helpers/HalfPainter.dart';
+
+typedef MotionTabBuilder = Widget Function();
+
+class MotionTabBar extends StatefulWidget {
+  final Color? tabIconColor,
+      tabIconSelectedColor,
+      tabSelectedColor,
+      tabBarColor;
+  final double? tabIconSize, tabIconSelectedSize, tabBarHeight, tabSize;
+  final TextStyle? textStyle;
+  final Function? onTabItemSelected;
+  final String initialSelectedTab;
+
+  final List<String?> labels;
+  final List<String>? icons;
+  final bool useSafeArea;
+  final MotionTabBarController? controller;
+
+  // badge
+  final List<Widget?>? badges;
+
+  MotionTabBar({
+    this.textStyle,
+    this.tabIconColor = Colors.black,
+    this.tabIconSize = 24,
+    this.tabIconSelectedColor = Colors.white,
+    this.tabIconSelectedSize = 24,
+    this.tabSelectedColor = Colors.black,
+    this.tabBarColor = Colors.white,
+    this.tabBarHeight = 65,
+    this.tabSize = 60,
+    this.onTabItemSelected,
+    required this.initialSelectedTab,
+    required this.labels,
+    this.icons,
+    this.useSafeArea = true,
+    this.badges,
+    this.controller,
+  })  : assert(labels.contains(initialSelectedTab)),
+        assert(icons != null && icons.length == labels.length),
+        assert((badges != null && badges.length > 0)
+            ? badges.length == labels.length
+            : true);
+
+  @override
+  _MotionTabBarState createState() => _MotionTabBarState();
+}
+
+class _MotionTabBarState extends State<MotionTabBar>
+    with TickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Tween<double> _positionTween;
+  late Animation<double> _positionAnimation;
+  late int selectedIndex;
+
+  late AnimationController _fadeOutController;
+  late Animation<double> _fadeFabOutAnimation;
+  late Animation<double> _fadeFabInAnimation;
+
+  late List<String?> labels;
+  late Map<String?, String> icons;
+
+  get tabAmount => icons.keys.length;
+  get index => labels.indexOf(selectedTab);
+
+  double fabIconAlpha = 1;
+  String? activeIcon;
+  String? selectedTab;
+
+  bool isRtl = false;
+  List<Widget>? badges;
+  Widget? activeBadge;
+
+  double getPosition(bool isRTL) {
+    double pace = 2 / (labels.length - 1);
+    double position = (pace * index) - 1;
+
+    if (isRTL) {
+      // If RTL, reverse the position calculation
+      position = 1 - (pace * index);
+    }
+
+    return position;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      isRtl = Directionality.of(context).index == 0;
+    });
+
+    if (widget.controller != null) {
+      widget.controller!.onTabChange = (index) {
+        if (mounted)
+          setState(() {
+            selectedTab = widget.labels[index];
+            activeIcon = widget.icons![index];
+          });
+        _initAnimationAndStart(_positionAnimation.value, getPosition(isRtl));
+      };
+    }
+
+    labels = widget.labels;
+    icons = Map.fromIterable(
+      labels,
+      key: (label) => label,
+      value: (label) => widget.icons![labels.indexOf(label)],
+    );
+
+    selectedTab = widget.initialSelectedTab;
+    activeIcon = icons[selectedTab];
+
+    // init badge text
+    int selectedIndex =
+        labels.indexWhere((element) => element == widget.initialSelectedTab);
+    activeBadge = (widget.badges != null && widget.badges!.length > 0)
+        ? widget.badges![selectedIndex]
+        : null;
+
+    _animationController = AnimationController(
+      duration: Duration(milliseconds: ANIM_DURATION),
+      vsync: this,
+    );
+
+    _fadeOutController = AnimationController(
+      duration: Duration(milliseconds: (ANIM_DURATION ~/ 5)),
+      vsync: this,
+    );
+
+    _positionTween = Tween<double>(begin: getPosition(isRtl), end: 1);
+
+    _positionAnimation = _positionTween.animate(
+        CurvedAnimation(parent: _animationController, curve: Curves.easeOut))
+      ..addListener(() {
+        if (mounted) setState(() {});
+      });
+
+    _fadeFabOutAnimation = Tween<double>(begin: 1, end: 0).animate(
+        CurvedAnimation(parent: _fadeOutController, curve: Curves.easeOut))
+      ..addListener(() {
+        if (mounted)
+          setState(() {
+            fabIconAlpha = _fadeFabOutAnimation.value;
+          });
+      })
+      ..addStatusListener((AnimationStatus status) {
+        if (status == AnimationStatus.completed) {
+          if (mounted)
+            setState(() {
+              activeIcon = icons[selectedTab];
+              int selectedIndex =
+                  labels.indexWhere((element) => element == selectedTab);
+              activeBadge = (widget.badges != null && widget.badges!.length > 0)
+                  ? widget.badges![selectedIndex]
+                  : null;
+            });
+        }
+      });
+
+    _fadeFabInAnimation = Tween<double>(begin: 0, end: 1).animate(
+        CurvedAnimation(
+            parent: _animationController,
+            curve: Interval(0.8, 1, curve: Curves.easeOut)))
+      ..addListener(() {
+        if (mounted)
+          setState(() {
+            fabIconAlpha = _fadeFabInAnimation.value;
+          });
+      });
+  }
+
+  @override
+  void dispose() {
+    if (widget.controller != null) {
+      widget.controller!.onTabChange =
+          null; // remove listener to avoid calls after dispose
+    }
+    _animationController.dispose();
+    _fadeOutController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    log('motion tab ---> ${activeIcon}');
+    final colors = Theme.of(context).colors;
+    return Container(
+      decoration: BoxDecoration(
+        color: widget.tabBarColor,
+        boxShadow: [
+          BoxShadow(
+            color: colors.isDarkMode ? Colors.white38 : Colors.black12,
+            offset: Offset(0, -1),
+            blurRadius: 5,
+          ),
+        ],
+      ),
+      child: SafeArea(
+        bottom: widget.useSafeArea,
+        child: Stack(
+          alignment: Alignment.topCenter,
+          children: <Widget>[
+            Container(
+              height: widget.tabBarHeight,
+              decoration: BoxDecoration(
+                color: widget.tabBarColor,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: generateTabItems(),
+              ),
+            ),
+            IgnorePointer(
+              child: Container(
+                decoration: BoxDecoration(color: Colors.transparent),
+                child: Align(
+                  heightFactor: 0,
+                  alignment: Alignment(_positionAnimation.value, 0),
+                  child: FractionallySizedBox(
+                    widthFactor: 1 / tabAmount,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: <Widget>[
+                        SizedBox(
+                          height: widget.tabSize! + 30,
+                          width: widget.tabSize! + 30,
+                          child: ClipRect(
+                            clipper: HalfClipper(),
+                            child: Container(
+                              child: Center(
+                                child: Container(
+                                  width: widget.tabSize! + 10,
+                                  height: widget.tabSize! + 10,
+                                  decoration: BoxDecoration(
+                                    color: widget.tabBarColor,
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black12,
+                                        blurRadius: 8,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: widget.tabSize! + 15,
+                          width: widget.tabSize! + 35,
+                          child: CustomPaint(
+                              painter: HalfPainter(color: widget.tabBarColor)),
+                        ),
+                        SizedBox(
+                          height: widget.tabSize,
+                          width: widget.tabSize,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              gradient: LinearGradient(
+                                colors: colors.isDarkMode
+                                    ? [
+                                        // Colors.lightBlue.shade400
+                                        //     .withOpacity(0.2),
+                                        // Colors.lightBlue.shade400
+                                        //     .withOpacity(0.4),
+                                        // Colors.lightBlue.shade500
+                                        //     .withOpacity(0.45),
+                                        // Colors.lightBlue.shade500
+                                        //     .withOpacity(0.7),
+
+                                        Colors.lightBlue.shade300,
+                                        Colors.lightBlue.shade400,
+                                        Colors.lightBlue.shade600,
+                                        Colors.lightBlue.shade600,
+                                      ]
+                                    : [
+                                        Colors.lightBlue.shade300,
+                                        Colors.lightBlue.shade400,
+                                        Colors.lightBlue.shade600,
+                                        Colors.lightBlue.shade600,
+                                      ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+
+                              // color: widget.tabSelectedColor,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Opacity(
+                                opacity: fabIconAlpha,
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Image.asset(
+                                      activeIcon!,
+                                      color: widget.tabIconSelectedColor,
+                                      height: widget.tabIconSelectedSize,
+                                      width: widget.tabIconSelectedSize,
+                                    ),
+                                    activeBadge != null
+                                        ? Positioned(
+                                            top: 0,
+                                            right: 0,
+                                            child: activeBadge!,
+                                          )
+                                        : SizedBox(),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  List<Widget> generateTabItems() {
+    bool isRtl = Directionality.of(context).index == 0;
+    return labels.map((tabLabel) {
+      String? icon = icons[tabLabel];
+
+      int selectedIndex = labels.indexWhere((element) => element == tabLabel);
+      Widget? badge = (widget.badges != null && widget.badges!.length > 0)
+          ? widget.badges![selectedIndex]
+          : null;
+
+      return MotionTabItem(
+          selected: selectedTab == tabLabel,
+          iconData: icon,
+          title: tabLabel?.tr,
+          textStyle: widget.textStyle ?? TextStyle(color: Colors.black),
+          tabIconColor: widget.tabIconColor ?? Colors.black,
+          tabIconSize: widget.tabIconSize,
+          badge: badge,
+          callbackFunction: () {
+            setState(() {
+              int idx = labels.indexOf(tabLabel);
+
+              if (widget.controller != null) {
+                widget.controller!.index = idx;
+              }
+
+              widget.onTabItemSelected?.call(idx);
+            });
+          });
+    }).toList();
+  }
+
+  _initAnimationAndStart(double from, double to) {
+    if (!mounted) return; // <-- prevents animation after dispose
+
+    _positionTween.begin = from;
+    _positionTween.end = to;
+
+    _animationController.reset();
+    _fadeOutController.reset();
+    _animationController.forward();
+    _fadeOutController.forward();
+  }
+}
