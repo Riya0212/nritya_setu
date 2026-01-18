@@ -90,7 +90,7 @@ class _DashboardScreenState extends State<DashboardScreen>
             _motionTabBarController!.index = value;
           });
        
-          tabLoadingController.changeTab(value);
+          // tabLoadingController.changeTab(value);
         },
       ),
     );
