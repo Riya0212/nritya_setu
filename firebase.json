@@ -74,9 +74,6 @@
     {
       "codebase": "default",
       "disallowLegacyRuntimeConfig": true,
-      "predeploy": [
-        "npm --prefix \"$RESOURCE_DIR\" run lint"
-      ],
       "ignore": [
         "node_modules",
         ".git",
