@@ -82,101 +82,103 @@ PreferredSizeWidget buildCustomAppBar(
 
   return PreferredSize(
     preferredSize: Size.fromHeight(
-      customHeight ?? Metrics.height(context) * 0.055,
+      customHeight ?? Metrics.height(context) * 0.06,
     ),
-    child: ClipRRect(
-      borderRadius: BorderRadius.only(
-        bottomLeft: Radius.circular(Metrics.height(context) * 0.02),
-        bottomRight: Radius.circular(Metrics.height(context) * 0.02),
-      ),
-      child: Stack(
-        children: [
-          // 🌈 Gradient background layer
-          Container(
-            decoration: BoxDecoration(
-              // color: colors.appbarColor,
-              gradient: LinearGradient(
-                colors:
-                    colors.isDarkMode
-                        ? [
-                          Colors.blue.shade300,
-                          Colors.blue.shade400,
-                          Colors.blue.shade600,
-                          Colors.blue.shade600,
-                        ]
-                        :colors.marronBg,
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
+    child: Container(
+      color: colors.marronColor.withOpacity(0.1),
+      child: ClipRRect(
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(Metrics.height(context) * 0.02),
+          bottomRight: Radius.circular(Metrics.height(context) * 0.02),
+        ),
+        child: Stack(
+          children: [
+            // 🌈 Gradient background layer
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors:
+                      colors.isDarkMode
+                          ? [
+                            Colors.blue.shade300,
+                            Colors.blue.shade400,
+                            Colors.blue.shade600,
+                            Colors.blue.shade600,
+                          ]
+                          : colors.marronBg,
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
               ),
             ),
-          ),
-
-          // 📷 Optional decorative image
-          topImage != null && topImage != ''
-              ? Positioned(
-                bottom:
-                    top ??
-                    (Metrics.isTablet(context) == true
-                        ? -Metrics.width(context) * 0.03
-                        : -Metrics.height(context) * 0.03),
-                right: -5,
-                child: Image.asset(
-                  topImage,
-                  width: Metrics.height(context) * 0.12,
-                  height: Metrics.height(context) * 0.12,
-                ),
-              )
-              : Container(),
-
-          AppBar(
-            backgroundColor: Colors.transparent, // Make it transparent
-            elevation: 0, // Remove shadow
-            leadingWidth:
-                hasLeading
-                    ? leadingWidth ??
-                        (Metrics.isTablet(context)
-                            ? Metrics.width(context) * 0.08
-                            : Metrics.width(context) * 0.12)
-                    : Metrics.width(context) * 0.03,
-            leading:
-                hasLeading
-                    ? isLeadingClickable == true
-                        ? InkWell(
-                          onTap:
-                              onBackPress ??
-                              () => {
-                                //go back
-                                context.pop(),
-                              },
-                          child:
-                              customLeading ??
-                              Icon(
-                                Icons.arrow_back_ios_new_sharp,
-                                color: colors.defaultWhite,
-                                size: Metrics.height(context) * 0.03,
-                              ),
-                        )
-                        : customLeading
-                    : SizedBox(width: Metrics.width(context) * 0.03),
-
-            titleSpacing:
-                Metrics.isTablet(context) ? 0 : Metrics.height(context) * 0.01,
-            title:
-                customTitle ??
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize:
-                        Metrics.isTablet(context)
-                            ? Metrics.getFontSize(context, 21)
-                            : Metrics.getFontSize(context, 20),
-                    color: Colors.white,
+      
+            // 📷 Optional decorative image
+            topImage != null && topImage != ''
+                ? Positioned(
+                  bottom:
+                      top ??
+                      (Metrics.isTablet(context) == true
+                          ? -Metrics.width(context) * 0.03
+                          : -Metrics.height(context) * 0.03),
+                  right: -5,
+                  child: Image.asset(
+                    topImage,
+                    width: Metrics.height(context) * 0.12,
+                    height: Metrics.height(context) * 0.12,
                   ),
-                ),
-            bottom: customBottom,
-            actions: actions,
-          ),
-        ],
+                )
+                : Container(),
+      
+            AppBar(
+              backgroundColor: Colors.transparent, // Make it transparent
+              elevation: 0, // Remove shadow
+              leadingWidth:
+                  hasLeading
+                      ? leadingWidth ??
+                          (Metrics.isTablet(context)
+                              ? Metrics.width(context) * 0.08
+                              : Metrics.width(context) * 0.12)
+                      : Metrics.width(context) * 0.03,
+              leading:
+                  hasLeading
+                      ? isLeadingClickable == true
+                          ? InkWell(
+                            onTap:
+                                onBackPress ??
+                                () => {
+                                  //go back
+                                  context.pop(),
+                                },
+                            child:
+                                customLeading ??
+                                Icon(
+                                  Icons.arrow_back_ios_new_sharp,
+                                  color: colors.defaultWhite,
+                                  size: Metrics.height(context) * 0.03,
+                                ),
+                          )
+                          : customLeading
+                      : SizedBox(width: Metrics.width(context) * 0.03),
+      
+              titleSpacing:
+                  Metrics.isTablet(context) ? 0 : Metrics.height(context) * 0.01,
+              title:
+                  customTitle ??
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize:
+                          Metrics.isTablet(context)
+                              ? Metrics.getFontSize(context, 21)
+                              : Metrics.getFontSize(context, 20),
+                      color: Colors.white,
+                    ),
+                  ),
+              bottom: customBottom,
+              actions: actions,
+            ),
+          ],
+        ),
       ),
     ),
   );

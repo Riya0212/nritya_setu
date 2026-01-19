@@ -4,6 +4,11 @@ import 'package:nritya_setu/constants/colors.dart';
 import 'package:nritya_setu/constants/utils.dart';
 import 'package:nritya_setu/packages/motion_tab_bar/MotionTabBar.dart';
 import 'package:nritya_setu/packages/motion_tab_bar/MotionTabBarController.dart';
+import 'package:nritya_setu/screens/home/index.dart';
+import 'package:nritya_setu/screens/riyaaz/index.dart';
+import 'package:nritya_setu/screens/settings/index.dart';
+import 'package:nritya_setu/screens/study/index.dart';
+import 'package:nritya_setu/screens/videos/index.dart';
 
 import '../../Constants/metrics.dart' hide Metrics;
 import '../../constants/index.dart';
@@ -50,12 +55,12 @@ class _DashboardScreenState extends State<DashboardScreen>
     );
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     return Scaffold(
-      appBar: buildCustomAppBar(context, 'Add Student Details'),
+      backgroundColor: colors.colorWhite,
       bottomNavigationBar: MotionTabBar(
         controller: _motionTabBarController,
-        initialSelectedTab: "home",
+        initialSelectedTab: "Home",
         useSafeArea: true,
-        labels: ["home", "calender", "setting", "profile"],
+        labels: ["Home", "Study", "Riyaaz", "Learning", "Settings"],
         icons: [
           Images.homeIcon,
           Images.syllabusIcon,
@@ -70,7 +75,7 @@ class _DashboardScreenState extends State<DashboardScreen>
               Metrics.isTablet(context)
                   ? Metrics.getFontSize(context, 14)
                   : Metrics.getFontSize(context, 12),
-          color: colors.lightBlueText,
+          color: colors.marronColor,
           fontWeight: FontWeight.w500,
         ),
         tabIconColor: colors.bottomTabGrey,
@@ -82,16 +87,27 @@ class _DashboardScreenState extends State<DashboardScreen>
             Metrics.isTablet(context)
                 ? Metrics.height(context) * 0.03
                 : Metrics.height(context) * 0.03,
-        tabSelectedColor: colors.colorLightBlue,
+        tabSelectedColor: colors.marronColor,
         tabBarColor: colors.colorWhite,
         onTabItemSelected: (int value) {
           setState(() {
             pageIndex = value;
             _motionTabBarController!.index = value;
           });
-       
+
           // tabLoadingController.changeTab(value);
         },
+      ),
+      body: TabBarView(
+        physics: NeverScrollableScrollPhysics(),
+        controller: _motionTabBarController,
+        children: [
+          HomeScreen(),
+          StudyScreen(),
+          RiyaazScreen(),
+          VideoScreen(),
+          SettingScreen(),
+        ],
       ),
     );
   }

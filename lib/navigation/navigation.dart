@@ -21,18 +21,69 @@ class NavigationConfig {
   }
 
   // This method is now used by the constructor to build the routes list.
-  List<GoRoute> _buildRoutes(List<Map<String, dynamic>> routesConfig) {
-    return routesConfig.map((route) {
-      final name = route["name"];
-      final path = route["options"]["path"];
-      final component = route['component'];
+List<GoRoute> _buildRoutes(List<Map<String, dynamic>> routesConfig) {
+  return routesConfig.map((route) {
+    final name = route["name"];
+    final path = route["options"]["path"];
+    final component = route['component'];
 
-      return GoRoute(
-        name: name,
-        path: path,
-        pageBuilder: (BuildContext context, GoRouterState state) =>
-            MaterialPage<dynamic>(child: component(context, state)),
-      );
-    }).toList();
-  }
+    return GoRoute(
+      name: name,
+      path: path,
+      pageBuilder: (BuildContext context, GoRouterState state) {
+        return MaterialPage<dynamic>(
+          key: state.pageKey,
+          child: Material(
+            // Ensures the global scaffoldBackgroundColor is applied
+            color: Theme.of(context).scaffoldBackgroundColor,
+            child: Theme(
+              data: Theme.of(context), // propagate theme properly
+              child: component(context, state),
+            ),
+          ),
+        );
+      },
+    );
+  }).toList();
+}
+
+
+  // List<GoRoute> _buildRoutes(List<Map<String, dynamic>> routesConfig) {
+  //   return routesConfig.map((route) {
+  //     final name = route["name"];
+  //     final path = route["options"]["path"];
+  //     final component = route['component'];
+
+  //     return GoRoute(
+  //       name: name,
+  //       path: path,
+  //       pageBuilder: (context, state) {
+  //         return CustomTransitionPage<dynamic>(
+  //           key: state.pageKey,
+  //           child: Theme(
+  //             data: Theme.of(context), // propagate theme properly
+  //             child: component(context, state),
+  //           ),
+  //           transitionsBuilder: (
+  //             context,
+  //             animation,
+  //             secondaryAnimation,
+  //             child,
+  //           ) {
+  //             return SlideTransition(
+  //               position: Tween<Offset>(
+  //                 begin: const Offset(1.0, 0.0),
+  //                 end: Offset.zero,
+  //               ).animate(animation),
+  //               child: FadeTransition(opacity: animation, child: child),
+  //             );
+  //           },
+  //           transitionDuration: const Duration(milliseconds: 300),
+  //         );
+  //       },
+  //     );
+  //   }).toList();
+  // }
+
+
 }

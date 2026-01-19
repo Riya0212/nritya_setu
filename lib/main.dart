@@ -45,8 +45,12 @@ class _MyAppState extends State<MyApp> {
         return MaterialApp.router(
           debugShowCheckedModeBanner: false,
           title: "PhotoReminder",
-          theme: ThemeData(brightness: Brightness.light),
-          darkTheme: ThemeData(brightness: Brightness.dark),
+          theme: ThemeData(brightness: Brightness.light).copyWith(
+            scaffoldBackgroundColor: Color(0xff5E1621).withOpacity(0.1),
+          ),
+          darkTheme: ThemeData(brightness: Brightness.dark).copyWith(
+            scaffoldBackgroundColor: Color(0xff5E1621).withOpacity(0.1),
+          ),
           themeMode: themeProvider.currentThemeMode,
           restorationScopeId: 'app',
           routerConfig: routeConfig.router,

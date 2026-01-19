@@ -289,12 +289,7 @@ class _MotionTabBarState extends State<MotionTabBar>
                                         Colors.lightBlue.shade600,
                                         Colors.lightBlue.shade600,
                                       ]
-                                    : [
-                                        Colors.lightBlue.shade300,
-                                        Colors.lightBlue.shade400,
-                                        Colors.lightBlue.shade600,
-                                        Colors.lightBlue.shade600,
-                                      ],
+                                    : colors.marronBg,
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                               ),

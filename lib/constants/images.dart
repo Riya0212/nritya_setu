@@ -9,10 +9,14 @@ class Images {
   static const success = "$_defaultPath/updated.png";
   static const reportIcon = "$_defaultPath/report.png";
   static const homeIcon = "$_defaultPath/home_drawer.png";
-  static const settingsIcon = "$_defaultPath/settings-2.png";
+  static const settingsIcon = "$_defaultPath/setting-2.png";
   static const learningIcon = "$_defaultPath/learning.png";
   static const lehraIcon = "$_defaultPath/lehra.png";
   static const syllabusIcon = "$_defaultPath/syllabus.png";
+  static const money = "$_defaultPath/wallet.png";
+  static const logoutIcon = "$_defaultPath/logout.png";
+
+
 
 
 

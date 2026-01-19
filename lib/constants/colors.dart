@@ -12,7 +12,7 @@ class CustomColors {
   static const Color platinum100 = Color(0xff737171);
   static const Color silver100 = Color(0xFFC4C4C4);
   static const Color lightBlue = Colors.lightBlue;
-  static const Color green = Color(0xFF2A9D8F);
+  static const Color green = Colors.lightGreen;
   static const Color grey = Color(0xff5B5B5B);
   static const Color red = Color(0xFFD60019);
   static const Color yellow = Color(0xffFFC107);
@@ -63,6 +63,8 @@ class CustomColors {
   Color get bgColor => offWhite;
   Color get orangeColor => warmTeracotta;
   Color get darkBlueColor => darkBlue;
+  Color get marronColor => Color(0xff5E1621);
+
   List<Color> get marronBg => marronGradient;
 
   Color get offWhiteBg => const Color.fromARGB(255, 255, 251, 251);

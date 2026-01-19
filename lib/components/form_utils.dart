@@ -64,14 +64,15 @@ Widget buildTextField({
     keyboardType: keyboardType,
     obscureText: obscureText,
     // 🔽 Dynamic autovalidateMode with fallback
-    autovalidateMode: autovalidateMode?? AutovalidateMode.onUserInteraction,
+    autovalidateMode: autovalidateMode ?? AutovalidateMode.onUserInteraction,
 
     textAlign: TextAlign.center,
     inputTextStyle: TextStyle(
       color: colors.colorBlack,
-      fontSize: Metrics.isTablet(context)
-          ? Metrics.getFontSize(context, 10)
-          : Metrics.getFontSize(context, 14),
+      fontSize:
+          Metrics.isTablet(context)
+              ? Metrics.getFontSize(context, 10)
+              : Metrics.getFontSize(context, 14),
     ),
     isFilled: true,
     fillColor: isAllowed == false ? colors.dividerGrey : colors.colorWhite,
@@ -83,9 +84,10 @@ Widget buildTextField({
     hintStyle: TextStyle(
       color: colors.isDarkMode ? Colors.white : Colors.grey,
       fontWeight: FontWeight.normal,
-      fontSize: Metrics.isTablet(context)
-          ? Metrics.getFontSize(context, 10)
-          : Metrics.getFontSize(context, 14),
+      fontSize:
+          Metrics.isTablet(context)
+              ? Metrics.getFontSize(context, 10)
+              : Metrics.getFontSize(context, 14),
     ),
     onChanged: onChanged,
 
@@ -100,9 +102,8 @@ Widget buildTextField({
         OutlineInputBorder(
           borderRadius: BorderRadius.circular(Metrics.height(context) * 0.02),
           borderSide: BorderSide(
-            color: isAllowed == false
-                ? colors.colorLightGrey
-                : colors.appbarColor,
+            color:
+                isAllowed == false ? colors.colorLightGrey : colors.appbarColor,
           ),
         ),
     enabledBorder:
@@ -112,21 +113,21 @@ Widget buildTextField({
           borderSide: BorderSide(color: colors.colorLightGrey),
         ),
 
-    contentPadding: Metrics.isTablet(context)
-        ? EdgeInsets.only(
-            left: Metrics.height(context) * 0.005,
-            right: Metrics.width(context) * 0.02,
-            top: Metrics.height(context) * 0.01,
-            bottom: Metrics.height(context) * 0.01,
-          )
-        : EdgeInsets.only(
-            right: Metrics.width(context) * 0.0,
-            top: Metrics.width(context) * 0.01,
-            bottom: Metrics.width(context) * 0.01,
-          ),
+    contentPadding:
+        Metrics.isTablet(context)
+            ? EdgeInsets.only(
+              left: Metrics.height(context) * 0.005,
+              right: Metrics.width(context) * 0.02,
+              top: Metrics.height(context) * 0.01,
+              bottom: Metrics.height(context) * 0.01,
+            )
+            : EdgeInsets.only(
+              right: Metrics.width(context) * 0.0,
+              top: Metrics.width(context) * 0.01,
+              bottom: Metrics.width(context) * 0.01,
+            ),
   );
 }
-
 
 Widget buildBtn({
   required BuildContext context,
@@ -138,15 +139,11 @@ Widget buildBtn({
 }) {
   final colors = Theme.of(context).colors;
   return InkWell(
-    borderRadius: BorderRadius.circular(
-      Metrics.height(context) * 0.02,
-    ),
+    borderRadius: BorderRadius.circular(Metrics.height(context) * 0.02),
     onTap: onTap,
     child: Container(
       width: width ?? double.infinity,
-      padding: EdgeInsets.all(
-        Metrics.width(context) * 0.03,
-      ),
+      padding: EdgeInsets.all(Metrics.width(context) * 0.03),
       decoration: BoxDecoration(
         color: backgroundColor,
         boxShadow: [
@@ -157,9 +154,7 @@ Widget buildBtn({
             offset: const Offset(2, 2),
           ),
         ],
-        borderRadius: BorderRadius.circular(
-          Metrics.height(context) * 0.02,
-        ),
+        borderRadius: BorderRadius.circular(Metrics.height(context) * 0.02),
       ),
       alignment: Alignment.center,
       child: TextComponent(
@@ -168,6 +163,46 @@ Widget buildBtn({
           color: textColor,
           fontWeight: FontWeight.bold,
           fontSize: Metrics.getFontSize(context, 20),
+        ),
+      ),
+    ),
+  );
+}
+
+Widget buildChildBtn({
+  required BuildContext context,
+  required String title,
+  required VoidCallback onTap,
+  Color backgroundColor = Colors.amber,
+  Color textColor = Colors.white,
+  double? width,
+}) {
+  final colors = Theme.of(context).colors;
+  return InkWell(
+    borderRadius: BorderRadius.circular(Metrics.height(context) * 0.02),
+    onTap: onTap,
+    child: Container(
+      width: width ?? double.infinity,
+      padding: EdgeInsets.all(Metrics.width(context) * 0.025),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        boxShadow: [
+          BoxShadow(
+            color: colors.colorLightGrey.withAlpha(50),
+            spreadRadius: 2,
+            blurRadius: 10,
+            offset: const Offset(2, 2),
+          ),
+        ],
+        borderRadius: BorderRadius.circular(Metrics.height(context) * 0.015),
+      ),
+      alignment: Alignment.center,
+      child: TextComponent(
+        text: title,
+        style: TextStyle(
+          color: textColor,
+          fontWeight: FontWeight.bold,
+          fontSize: Metrics.getFontSize(context, 18),
         ),
       ),
     ),
